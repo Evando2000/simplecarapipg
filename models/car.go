@@ -11,7 +11,7 @@ type Car struct {
 	Brand string `json:"brand" gorm:"size:255;not null"`
 }
 
-func (c *Car) SaveCar(db *gorm.DB) (*Car, error) {
+func (c *Car) CreateCar(db *gorm.DB) (*Car, error) {
 	err := db.Debug().Model(&Car{}).Create(&c).Error
 	if err != nil {
 		return &Car{}, err

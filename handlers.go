@@ -16,6 +16,27 @@ func getAllCarsHandler(c *gin.Context) {
 	c.JSON(200, gin.H{"response": carList})
 }
 
+func createCarHandler(c *gin.Context) {
+	newReq, err := reqValidator(c)
+	if err != nil {
+		c.JSON(400, gin.H{"response": err.Error()})
+		return
+	}
+
+	carModel := models.Car{
+		Model: newReq.Model,
+		Color: newReq.Color,
+		Brand: newReq.Brand,
+	}
+
+	newCar, err := carModel.CreateCar(models.DB)
+	if err != nil {
+		c.JSON(400, gin.H{"response": err.Error()})
+		return
+	}
+	c.JSON(200, gin.H{"response": newCar})
+}
+
 func uploadFileHandler(c *gin.Context) {
 	file, err := c.FormFile("file")
 	if err != nil {

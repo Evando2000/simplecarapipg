@@ -36,7 +36,7 @@ func prepare() {
 		Brand: "newBrand",
 	}
 
-	carCreated, err := newCar.SaveCar(models.DB)
+	carCreated, err := newCar.CreateCar(models.DB)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
@@ -51,7 +51,7 @@ func main() {
 	carGroupRouter := router.Group("/car")
 	{
 		carGroupRouter.GET("/", getAllCarsHandler)
-		// carGroupRouter.POST("/", createCarHandler)
+		carGroupRouter.POST("/", createCarHandler)
 		// carGroupRouter.DELETE("/", deleteAllCarHandler)
 		// carGroupRouter.GET("/:id", getCarHandler)
 		// carGroupRouter.PUT("/:id", updateCarHandler)
