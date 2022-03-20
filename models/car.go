@@ -40,3 +40,22 @@ func (c *Car) GetCarByID(db *gorm.DB, uid uint64) (*Car, error) {
 	}
 	return c, err
 }
+
+func (c *Car) UpdateCar(db *gorm.DB, uid uint64) (*Car, error) {
+	db = db.Debug().Model(&Car{}).Where("id = ?", uid).Take(&Car{}).UpdateColumns(
+		map[string]interface{}{
+			"model": c.Model,
+			"color": c.Color,
+			"brand": c.Brand,
+		},
+	)
+	if db.Error != nil {
+		return &Car{}, db.Error
+	}
+	// This is the display the updated user
+	err := db.Debug().Model(&Car{}).Where("id = ?", uid).Take(&c).Error
+	if err != nil {
+		return &Car{}, err
+	}
+	return c, nil
+}
