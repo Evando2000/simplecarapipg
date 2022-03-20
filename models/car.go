@@ -72,3 +72,16 @@ func (c *Car) DeleteCar(db *gorm.DB, uid uint64) (*[]Car, error) {
 	}
 	return &cars, nil
 }
+
+func (c *Car) DeleteAllCars(db *gorm.DB) (*[]Car, error) {
+	cars := []Car{}
+	err := db.Debug().Model(&Car{}).Delete(&Car{}).Error
+	if err != nil {
+		return nil, err
+	}
+	err = db.Debug().Model(&Car{}).Limit(100).Find(&cars).Error
+	if err != nil {
+		return nil, err
+	}
+	return &cars, nil
+}

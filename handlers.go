@@ -101,6 +101,16 @@ func deleteCarHandler(c *gin.Context) {
 	c.JSON(200, gin.H{"response": cars})
 }
 
+func deleteAllCarHandler(c *gin.Context) {
+	carModel := models.Car{}
+	cars, err := carModel.DeleteAllCars(models.DB)
+	if err != nil {
+		c.JSON(400, gin.H{"response": err.Error()})
+		return
+	}
+	c.JSON(200, gin.H{"response": cars})
+}
+
 func uploadFileHandler(c *gin.Context) {
 	file, err := c.FormFile("file")
 	if err != nil {
