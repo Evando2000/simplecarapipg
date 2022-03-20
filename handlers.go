@@ -2,6 +2,7 @@ package main
 
 import (
 	"sca-pg/models"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -35,6 +36,23 @@ func createCarHandler(c *gin.Context) {
 		return
 	}
 	c.JSON(200, gin.H{"response": newCar})
+}
+
+func getCarHandler(c *gin.Context) {
+	id := c.Param("id")
+	uid, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		c.JSON(400, gin.H{"response": err.Error()})
+		return
+	}
+
+	carModel := models.Car{}
+	getCar, err := carModel.GetCarByID(models.DB, uid)
+	if err != nil {
+		c.JSON(400, gin.H{"response": err.Error()})
+		return
+	}
+	c.JSON(200, gin.H{"response": getCar})
 }
 
 func uploadFileHandler(c *gin.Context) {

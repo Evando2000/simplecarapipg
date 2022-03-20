@@ -1,6 +1,8 @@
 package models
 
 import (
+	"errors"
+
 	"github.com/jinzhu/gorm"
 )
 
@@ -26,4 +28,15 @@ func (c *Car) GetAllCars(db *gorm.DB) (*[]Car, error) {
 		return nil, err
 	}
 	return &carModels, nil
+}
+
+func (c *Car) GetCarByID(db *gorm.DB, uid uint64) (*Car, error) {
+	err := db.Debug().Model(Car{}).Where("id = ?", uid).Take(&c).Error
+	if err != nil {
+		return nil, err
+	}
+	if gorm.IsRecordNotFoundError(err) {
+		return nil, errors.New("car not found")
+	}
+	return c, err
 }
