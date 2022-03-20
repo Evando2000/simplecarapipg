@@ -55,7 +55,7 @@ func main() {
 		// carGroupRouter.DELETE("/", deleteAllCarHandler)
 		carGroupRouter.GET("/:id", getCarHandler)
 		carGroupRouter.PUT("/:id", updateCarHandler)
-		// carGroupRouter.DELETE("/:id", deleteCarHandler)
+		carGroupRouter.DELETE("/:id", deleteCarHandler)
 
 	}
 

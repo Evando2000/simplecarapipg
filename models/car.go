@@ -52,10 +52,23 @@ func (c *Car) UpdateCar(db *gorm.DB, uid uint64) (*Car, error) {
 	if db.Error != nil {
 		return &Car{}, db.Error
 	}
-	// This is the display the updated user
+
 	err := db.Debug().Model(&Car{}).Where("id = ?", uid).Take(&c).Error
 	if err != nil {
 		return &Car{}, err
 	}
 	return c, nil
+}
+
+func (c *Car) DeleteCar(db *gorm.DB, uid uint64) (*[]Car, error) {
+	cars := []Car{}
+	err := db.Debug().Model(&Car{}).Where("id = ?", uid).Take(&Car{}).Delete(&Car{}).Error
+	if err != nil {
+		return nil, err
+	}
+	err = db.Debug().Model(&Car{}).Limit(100).Find(&cars).Error
+	if err != nil {
+		return nil, err
+	}
+	return &cars, nil
 }

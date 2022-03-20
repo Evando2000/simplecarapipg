@@ -84,6 +84,23 @@ func updateCarHandler(c *gin.Context) {
 	c.JSON(200, gin.H{"response": updatedCar})
 }
 
+func deleteCarHandler(c *gin.Context) {
+	id := c.Param("id")
+	uid, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		c.JSON(400, gin.H{"response": err.Error()})
+		return
+	}
+
+	carModel := models.Car{}
+	cars, err := carModel.DeleteCar(models.DB, uid)
+	if err != nil {
+		c.JSON(400, gin.H{"response": err.Error()})
+		return
+	}
+	c.JSON(200, gin.H{"response": cars})
+}
+
 func uploadFileHandler(c *gin.Context) {
 	file, err := c.FormFile("file")
 	if err != nil {
